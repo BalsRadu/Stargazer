@@ -1,0 +1,30 @@
+{
+  "name": "stargazer",
+  "version": "1.0.0",
+  "description": "An image-sharing platform for images created with the Stable Diffusion model.",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BalsRadu/Stargazer.git"
+  },
+  "author": "Bals Radu <bals.radu@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BalsRadu/Stargazer/issues"
+  },
+  "homepage": "https://github.com/BalsRadu/Stargazer#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "core-util-is": "^1.0.3",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.6.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
