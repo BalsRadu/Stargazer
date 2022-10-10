@@ -5,9 +5,12 @@
             <h4>Login</h4>
         </header>
       <main class="form-group">
-        <input type="text" v-model="email" placeholder="Email"/>
-        <input type="text" v-model="password" placeholder="Password"/>
-        <button class = "login-btn">Log in</button>
+        <input type="text" v-model="email" placeholder="Email" :class="(emailError) ? 'err' : ''"/>
+        <input type="password" v-model="password" placeholder="Password" :class="(passError) ? 'err' : ''"/>
+        <button class = "login-btn" @click="login">Log in</button>
+        <div class="error_msg" v-if="hasErrors">
+                {{error}}
+        </div>
       </main>
       <footer>
         <p>
@@ -23,7 +26,45 @@
         data() {
             return {
                 email:"",
-                password:""
+                password:"",
+                hasErrors: false,
+                emailError: false,
+                passError: false,
+                error:""
+            }
+        },
+
+        methods:{
+            login() {
+                let api_url = this.$store.state.api_url
+                if(this.email == '' || this.password == '') return alert('Please fill in all fields')
+                this.$http.post(api_url + 'user/login', {
+                    email: this.email,
+                    password: this.password
+                }).then(response => {
+                    if(response.data.auth){
+                        localStorage.setItem("jwt", response.data.token)
+                        this.$router.push("/")
+                    }else{
+                        if(response.data.emailError){
+                            this.emailError = true
+                        }else{
+                            this.emailError = false
+                        }
+
+                        if(response.data.passError){
+                            this.passError = true
+                        }
+                        else{
+                            this.passError = false
+                        }
+                        this.error = response.data.msg
+                        this.hasErrors = true
+                    }
+                }).catch(err => {
+                    this.error = err
+                    this.hasErrors = true
+                })
             }
         }
     }
@@ -57,40 +98,6 @@
             margin: 0;
             padding: 0;
             }
-    }
-    .form-group{
-        flex: 1;
-        display: flex;
-        justify-content: flex-start;
-        flex-flow: column;
-        padding: 25px;
-
-        input {
-            width: 100%;
-            height: 30px;
-            border: 1px solid #000;
-            margin-bottom: 15px;
-            text-indent: 5px;
-            background: #ddd;
-            outline: none;
-
-            &:focus{
-                border: 1px solid #fff;
-            }
-        }
-        button {
-            width: 100%;
-            height: 30px;
-            background: #9F4C93;
-            appearance: none;
-            border: none;
-            outline: none;
-            border-radius: 8px;
-
-            color:  #ddd;
-            font-size: 18px;
-            font-weight: 700;
-        }
     }
     footer {
 

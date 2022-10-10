@@ -6,9 +6,12 @@
         </header>
             <main class="form-group">
             <input type="text" v-model="username" placeholder="Username"/>
-            <input type="text" v-model="email" placeholder="Email"/>
-            <input type="text" v-model="password" placeholder="Password"/>
-            <button class = "login-btn">Register</button>
+            <input type="text" v-model="email" placeholder="Email" :class="(hasErrors) ? 'err' : ''"/>
+            <input type="password" v-model="password" placeholder="Password"/>
+            <button class = "register-btn" @click="register">Register</button>
+            <div class="error_msg" v-if="hasErrors">
+                {{error}}
+            </div>
         </main>
         <footer>
             <p>
@@ -24,11 +27,42 @@
         data() {
             return{
                 username: "",
-                email:"",
-                password:""
+                email: "",
+                password: "",
+                hasErrors: false,
+                error: ""
+            }
+        },
+        methods:{
+            register() {
+                let api_url = this.$store.state.api_url
+                if(
+                this.username == "" || 
+                this.email == ""  || 
+                this.password == ""
+                ) {
+                    return alert('Please fill in all fields')
+                }
+                this.$http.post(api_url + 'user/register', {
+                    username: this.username,
+                    email: this.email,
+                    password: this.password
+                }).then(response => {
+                    if(response.data.auth){
+                        localStorage.setItem("jwt", response.data.token)
+                        this.$router.push("/")
+                    }else{
+                        this.error = response.data.msg
+                        this.hasErrors = true
+                    }
+                }).catch(err => {
+                    this.error = err
+                    this.hasErrors = true
+                })
             }
         }
     }
+
 
 </script>
 
@@ -63,40 +97,7 @@
         }
         
     }
-    .form-group{
-        flex: 1;
-        display: flex;
-        justify-content: flex-start;
-        flex-flow: column;
-        padding: 25px;
-
-        input {
-            width: 100%;
-            height: 30px;
-            border: 1px solid #000;
-            margin-bottom: 15px;
-            text-indent: 5px;
-            background: #ddd;
-            outline: none;
-
-            &:focus{
-                border: 1px solid #fff;
-            }
-        }
-        button {
-            width: 100%;
-            height: 30px;
-            background: #9F4C93;
-            appearance: none;
-            border: none;
-            outline: none;
-            border-radius: 8px;
-
-            color:  #ddd;
-            font-size: 18px;
-            font-weight: 700;
-        }
-    }
+    
     footer {
 
         width: calc(100% -50px);
