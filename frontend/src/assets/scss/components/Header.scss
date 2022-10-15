@@ -1,0 +1,24 @@
+.header {
+    position: fixed;
+    
+    width: 100vw;
+    height: 40px;
+    background-color: #212121;
+    border-bottom: 1px solid #444;
+    margin: 0;
+
+    .title{
+        margin: 0;
+        padding: 0;
+        color: white;
+        font-size: 28px;
+        line-height: 40px;
+        text-align: center;
+        font-weight: 900;
+
+        span {
+            font-weight: 300;
+        }
+
+    }
+}

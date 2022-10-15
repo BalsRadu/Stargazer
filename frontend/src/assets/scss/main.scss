@@ -1,0 +1,25 @@
+body{
+    margin: 0;
+    padding: 0;
+    background: #212121;
+    font-family: "Roboto",Helvetica, sans-serif;
+  }
+
+#app {
+  width: 100vh;
+  min-height: 100vh;
+}
+
+.view{
+  padding: 40px 0px;
+}
+
+//PAGES
+@import "./pages/login.scss";
+@import "./pages/register.scss";
+@import "./pages/feed.scss";
+
+//COMPONENTS
+@import "./components/Header.scss";
+@import "./components/Footer.scss";
+@import "./components/Post.scss";

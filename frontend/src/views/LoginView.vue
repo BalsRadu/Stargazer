@@ -43,9 +43,9 @@
                     password: this.password
                 }).then(response => {
                     if(response.data.auth){
-                        localStorage.setItem("jwt", response.data.token)
-                        this.$router.push("/")
+                        this.$store.commit("login", response.data.token);
                     }else{
+
                         if(response.data.emailError){
                             this.emailError = true
                         }else{
@@ -58,6 +58,7 @@
                         else{
                             this.passError = false
                         }
+
                         this.error = response.data.msg
                         this.hasErrors = true
                     }
@@ -70,62 +71,3 @@
     }
 
 </script>
-
-<style lang="scss" scoped>
-.login-page {
-
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    box-sizing: border-box;
-
-    header{
-        h3 {
-            color: white;
-            font-size: 28px;
-            text-align: center;
-            font-weight: 900;
-            margin: 0;
-            span{
-                font-weight: 300;
-            }
-        }
-        h4{
-            color: #ccc;
-            font-size: 24px;
-            text-align: center;
-            font-weight: 300;
-            margin: 0;
-            padding: 0;
-            }
-    }
-    footer {
-
-        width: calc(100% -50px);
-        height: 15px;
-        background-color: #303030;
-        box-shadow: 0px -1px 3px rgba(255,255,255,0.2);
-        padding: 10px 25px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        color:  #888;
-
-        p{
-            color: #aaa;
-            font-size: 16px;
-            margin: 0px;
-            padding: 0px;
-            text-align: center;
-        } 
-
-        .link {
-            color: #9F4C93;
-            text-decoration: none;
-            font-weight: 700;
-        }
-
-    }
-}
-</style>
