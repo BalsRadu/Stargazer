@@ -12,16 +12,24 @@
             <div>Guidance scale: {{ guidance_scale }}</div>
             <vue-slider v-model="guidance_scale" :min="5" :max="10"/>
             <div class="post-btns">
-                <button class = "create-btn" @click="createImage" v-if="!generated">Create Image</button>
-                <button class = "upload-btn" @click="uploadImage" v-if="generated">Upload Image</button>
-                <button class = "cancel-btn" @click="cancel" v-if="generated">Cancel</button>
+                <button class = "create-btn" @click="createImage" v-if="!generated">
+                    <i class="material-icons icn-lg">auto_fix_high</i>
+                </button>
+                <button class = "upload-btn" @click="uploadImage" v-if="generated">
+                    <i class="material-icons icn-lg">delete</i>
+                </button>
+                <button class = "cancel-btn" @click="cancel" v-if="generated">
+                    <i class="material-icons  icn-lg">cloud_upload</i>
+                </button>
             </div>
         </section>
         
         <section :class="(generated) ? 'show' : 'hide'">
             <canvas ref="canvas" id="canvas"></canvas>
-            <label for="desc">Description: </label>
-            <input type="text" id="desc" name="desc" v-model="desc" />
+            <div class="field-group">
+                <label for="desc">Description: </label>
+                <input type="text" id="desc" name="desc" v-model="desc" class="input-field" />
+            </div>
         </section>
         
         
@@ -45,9 +53,9 @@
                 numInferenceSteps: 50,
                 guidance_scale: 7.5,
                 canvas: {},
-                imgSrc: "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRN5fqnV7miA0Uk212WaNtCFW2B_twBPfPPGp8o-wdDEddQfcuM",
+                imgSrc: "",
                 desc: "",
-                generated: true,
+                generated: false,
 
             }
         },
@@ -60,7 +68,7 @@
         },
         methods: {
             createImage () {
-                let api_url = "http://49e5-35-192-47-3.ngrok.io"
+                let api_url = "http://3511-35-233-224-64.ngrok.io"
                 if(this.prompt == "") {
                     return alert('Please enter a prompt')
                 }
@@ -124,27 +132,3 @@
 }
 
 </script>
-
-<style lang="scss">
-.post {
-    margin-left: 2.5%;
-    color:white;
-}
-.show {
-    display:block;
-}
-.hide {
-    display:none;
-}
-
-.post-btns {
-    position: fixed;
-    bottom: 65px;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-#canvas {
-    margin-left: 2.5%;
-}
-</style>

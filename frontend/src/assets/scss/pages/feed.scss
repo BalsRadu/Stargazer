@@ -1,0 +1,39 @@
+.feed {
+    .post {
+        background-color: #303030;
+        border-bottom: 1px dashed #CCC;
+
+
+        .post-user {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+    
+            text-transform: uppercase;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .post-picture {
+            .post-image {
+                width: 100%;
+            }
+        }
+
+        .post-desc {
+            padding: 15px;
+
+            p {
+                color: #CCC;
+                font-size: 16px;
+                margin: 0;
+            }
+
+            .timestamp {
+                color: #CCC;
+                font-size: 12px;
+                margin-top: 15px;
+            }
+        }
+    }
+}

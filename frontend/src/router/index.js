@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import PostView from '../views/PostView.vue'
+import ProfileView from '../views/ProfileView.vue'
 import axios from "axios"
 import store from '@/store'
 
@@ -39,6 +40,14 @@ const routes = [
     meta:{
       requireAuth: true
     }
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: ProfileView,
+    meta:{
+      requireAuth: true
+    }
   }
   
 ]
@@ -48,11 +57,12 @@ const router = createRouter({
   routes
 })
 
-const onReady = () => {
+
+const onReady = (path) => {
   store.commit("isAuthenticated");
+  if (path === "/")
   axios.get(store.state.api_url + "post/getposts")
     .then(response => {
-      console.log(response);
       store.commit("getFeed", response.data);
     })
     .catch(err => {
@@ -61,7 +71,7 @@ const onReady = () => {
 };
 
 router.beforeEach((to, from, next) => {
-  onReady();
+  onReady(to.fullPath);
   if(to.matched.some(record => record.meta.requireAuth)){
     if(localStorage.getItem('jwt') == null){
       next({

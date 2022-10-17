@@ -12,4 +12,12 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
+
+    button {
+        color: white;
+        appearance: none;
+        border: none;
+        outline: none;
+        background: none;
+    }
 }

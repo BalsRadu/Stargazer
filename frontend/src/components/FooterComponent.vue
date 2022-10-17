@@ -1,10 +1,10 @@
 <template>
     <footer class="footer">
-        <button @click="goto('/')">Home</button>
-        <button>Global</button>
-        <button @click="goto('/newpost')">Post</button>
-        <button>Notification</button>
-        <button>Profile</button>
+        <button @click="goto('/')"><i class="material-icons">home</i></button>
+        <button><i class="material-icons">search</i></button>
+        <button @click="goto('/newpost')"><i class="material-icons">auto_awesome</i></button>
+        <button><i class="material-icons">announcement</i></button>
+        <button @click="goto('/profile')"><i class="material-icons">account_box</i></button>
     </footer>
 </template>
 
