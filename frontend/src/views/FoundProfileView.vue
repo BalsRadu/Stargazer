@@ -3,14 +3,14 @@
 
         <section class="profile-head">
             <div class="profile-details-name">
-                    <div class="user-name">
+                <div class="user-name">
                     <img class="profile-picture" src="https://place-hold.it/50" />
                     <span>{{ display_name }}</span>
                 </div>
                 <div class="user-description">
-                        <p>
-                          this is hardcoded test  
-                        </p>
+                    <p>
+                      this is hardcoded test  
+                    </p>
                 </div>
             </div>
 
@@ -32,17 +32,20 @@
                 
             </div>
 
-            <div @click="goto('/editprofile')" class="edit-profile-sec">
-                <span class="edit-profile">
-                    Edit profile
+            <div class="follow-profile-sec">
+                <span class="follow-profile">
+                    Follow
+                </span>
+                <span class="unfollow-profile">
+                    Unfollow
                 </span>
             </div>
             
         </section>
 
         <section class="posts">
-            <div class="post" v-for="post in posts" :key="post._id">     
-                <img :src="post.image" :alt="post.desc" class="post-image"/>
+            <div class="post" v-for="post in posts" :key="post._id">
+                <img :src="post.image" :alt="post.description" class="post-image">
             </div>
         </section>
 
@@ -50,37 +53,34 @@
 </template>
 
 <script>
-    export default {
-        name: "profilePage",
-        data () {
-            return {
-                display_name: '',
-                posts: [],
-                post_count: '',
-                follower_count: '',
-                following_count: ''
-            }
-        },
-        methods: {
-            getProfile () {
-                this.$http.post(this.$store.state.api_url + 
-                "user/getprofile", {
-                    auth_token: localStorage.getItem("jwt")
-                }).then(({ data }) => {
-                    this.display_name = data.details.display_name;
-                    this.posts = data.details.posts;
-                });
-            },
-            goto(path) {
-            this.$router.push(path)
-            }
-        },
-        beforeMount () {
-            this.getProfile();
+export default {
+    name: 'profilePage',
+    data() {
+        return {
+            display_name: '',
+            posts: [],
+            post_count: ''
         }
+    },
+    methods: {
+        getProfile() {
+            //todo get req params
+            this.$http.post(this.$store.state.api_url + 'user/getsearchedprofile/' + this.$route.params.id)
+            .then(data => {
+                this.display_name = data.data.display_name
+                this.posts = data.data.posts
+                this.post_count = this.posts.length
+            })
+        },
+        goto(path) {
+            this.$router.push(path)
+        }
+    },
+    beforeMount() {
+        this.getProfile()
     }
+}
 </script>
-
 
 <style lang="scss" scoped>
     .profile {
@@ -135,10 +135,10 @@
                     }
                 }
             }
-            .edit-profile-sec {
+            .follow-profile-sec {
                 position: absolute;;
-                right:15%;
-                top:102px;
+                right:10%;
+                top:100px;
                 display:block;
                 text-align: center;
                 height: 35px;
@@ -146,11 +146,12 @@
                 &::after {
                     clear:both;
                 }
-                .edit-profile {
+                .follow-profile, .unfollow-profile {
                     position:relative;
                     border: 1px solid #9b9b9b;
-                    padding-left: 50px;
-                    padding-right:50px;
+                    padding-left: 25px;
+                    padding-right:25px;
+                    margin-right:15px;
                     cursor: pointer;
                 }
             }

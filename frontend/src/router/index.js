@@ -4,6 +4,9 @@ import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import PostView from '../views/PostView.vue'
 import ProfileView from '../views/ProfileView.vue'
+import EditProfileView from '../views/EditProfileView.vue'
+import GlobalView from '../views/GlobalView.vue'
+import FoundProfileView from '../views/FoundProfileView.vue'
 import axios from "axios"
 import store from '@/store'
 
@@ -14,7 +17,7 @@ const routes = [
     name: 'register',
     component: RegisterView,
     meta:{
-      requireAuth: false
+      requiresAuth: false
     }
   },
   {
@@ -22,7 +25,7 @@ const routes = [
     name: 'login',
     component: LoginView,
     meta:{
-      requireAuth: false
+      requiresAuth: false
     }
   },
   {
@@ -30,7 +33,7 @@ const routes = [
     name: 'home',
     component: HomeView,
     meta:{
-      requireAuth: true
+      requiresAuth: true
     }
   },
   {
@@ -38,7 +41,7 @@ const routes = [
     name: 'post',
     component: PostView,
     meta:{
-      requireAuth: true
+      requiresAuth: true
     }
   },
   {
@@ -46,9 +49,33 @@ const routes = [
     name: 'profile',
     component: ProfileView,
     meta:{
-      requireAuth: true
+      requiresAuth: true
     }
-  }
+  },
+  {
+    path: '/editprofile',
+    name: 'editprofile',
+    component: EditProfileView,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/global',
+    name: 'global',
+    component: GlobalView,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/foundprofile/:id',
+    name: 'found',
+    component: FoundProfileView,
+    meta: {
+      requiresAuth: true
+    }
+  },
   
 ]
 
@@ -71,8 +98,9 @@ const onReady = (path) => {
 };
 
 router.beforeEach((to, from, next) => {
+
   onReady(to.fullPath);
-  if(to.matched.some(record => record.meta.requireAuth)){
+  if(to.matched.some(record => record.meta.requiresAuth)){
     if(localStorage.getItem('jwt') == null){
       next({
         path: "/login",
@@ -82,6 +110,7 @@ router.beforeEach((to, from, next) => {
       next()
     }
   }else{
+    console.log('no');
     if(localStorage.getItem('jwt') != null){
       next({
         path: "/",

@@ -15,7 +15,7 @@
         </main>
         <footer>
             <p>
-                Already Registered? <router-link class="link" to="/login">Sign in</router-link>.
+                Already have an account? <router-link class="link" to="/login">Log in here!</router-link>
             </p>
         </footer>
     </div>

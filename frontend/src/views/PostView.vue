@@ -53,9 +53,9 @@
                 numInferenceSteps: 50,
                 guidance_scale: 7.5,
                 canvas: {},
-                imgSrc: "",
+                imgSrc: "https://www.google.com/search?q=old+guy+stock+image&tbm=isch&ved=2ahUKEwjQnsmFw_b6AhVVi_0HHUVPD9wQ2-cCegQIABAA&oq=old+guy+sto&gs_lcp=CgNpbWcQARgAMgcIABCABBATMgcIABCABBATMgcIABCABBATMgcIABCABBATMgcIABCABBATMggIABAFEB4QEzIICAAQCBAeEBMyCAgAEAgQHhATMggIABAIEB4QEzIICAAQCBAeEBM6BwgAELEDEEM6BQgAEIAEOgQIIxAnOggIABCxAxCDAToICAAQgAQQsQM6BAgAEEM6CwgAEIAEELEDEIMBOgcIABCABBADOgQIABAeUOoFWOMfYJ8maAFwAHgAgAG0AogB_wySAQc2LjUuMS4xmAEAoAEBqgELZ3dzLXdpei1pbWfAAQE&sclient=img&ei=i0pVY5CtC9WW9u8PxZ694A0&bih=691&biw=768&rlz=1C1GCEU_enRO924RO924#imgrc=eaz19PG0E4RvaM",
                 desc: "",
-                generated: false,
+                generated: true,
 
             }
         },
@@ -113,8 +113,7 @@
                     auth_token: localStorage.getItem("jwt"),
                     image: this.imgSrc,
                     desc: this.desc  
-                }).then(response => {
-                    console.log(response);
+                }).then(() => {
                     this.generated = false;
                     this.imgSrc = "";
                     this.desc = "";
@@ -132,3 +131,4 @@
 }
 
 </script>
+

@@ -2,12 +2,18 @@
   <div class="view feed">
     
     <article class="post" v-for="post in feed" :key="post.id">
-      <header class="post-user">{{ post.display_name }}</header>
+      <header class="post-user">
+        <img class="profile-picture" src="https://place-hold.it/30" />
+        <span>{{ post.display_name }}</span>
+      </header>
       <section class="post-picture">
         <img :src="post.image" :alt="post.desc" class="post-image">
       </section>
       <footer class="post-desc">
-        <p><strong>{{ post.display_name}}:</strong> {{ post.desc }}</p>
+        <p class="description">
+          <strong>{{ post.display_name}}:</strong> 
+          <span>{{ post.desc }}</span>
+        </p>
         <p class="timestamp">{{ timestampToDate(post.timestamp) }}</p>
       </footer>
     </article>
