@@ -2,7 +2,7 @@
     <section class="view">
         <div class="form-group">
 
-            <h3 class="updated" v-if="success" :class="(success) ? 'show' : 'hide'">Profile updated!</h3>
+            <h3 class="updated" v-if="success" :class="(success) ? 'show' : 'hide'">{{this.msg}}</h3>
 
             <span>PROFILE PICTURE UPLOAD</span> <br>
             <div for="username">Username</div>
@@ -35,12 +35,17 @@ export default {
     },
     methods: {
         update() {
-            
+            if(
+                this.username == "" && 
+                this.email == ""  
+                ){
+                    return alert('Please fill at least one field')
+                }
             let api_url = this.$store.state.api_url;
             this.$http.post(api_url + 'user/editprofile', {
                 auth_token: localStorage.getItem('jwt'),
                 username: this.username,
-                image: this.profile_picture,
+                // image: this.profile_picture,
                 email: this.email,
                 //password: this.password
             }).then(response => {

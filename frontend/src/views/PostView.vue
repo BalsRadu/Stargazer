@@ -16,10 +16,10 @@
                     <i class="material-icons icn-lg">auto_fix_high</i>
                 </button>
                 <button class = "upload-btn" @click="uploadImage" v-if="generated">
-                    <i class="material-icons icn-lg">delete</i>
+                    <i class="material-icons icn-lg">cloud_upload</i>
                 </button>
                 <button class = "cancel-btn" @click="cancel" v-if="generated">
-                    <i class="material-icons  icn-lg">cloud_upload</i>
+                    <i class="material-icons  icn-lg"> delete </i>
                 </button>
             </div>
         </section>
@@ -53,7 +53,7 @@
                 numInferenceSteps: 50,
                 guidance_scale: 7.5,
                 canvas: {},
-                imgSrc: "https://www.google.com/search?q=old+guy+stock+image&tbm=isch&ved=2ahUKEwjQnsmFw_b6AhVVi_0HHUVPD9wQ2-cCegQIABAA&oq=old+guy+sto&gs_lcp=CgNpbWcQARgAMgcIABCABBATMgcIABCABBATMgcIABCABBATMgcIABCABBATMgcIABCABBATMggIABAFEB4QEzIICAAQCBAeEBMyCAgAEAgQHhATMggIABAIEB4QEzIICAAQCBAeEBM6BwgAELEDEEM6BQgAEIAEOgQIIxAnOggIABCxAxCDAToICAAQgAQQsQM6BAgAEEM6CwgAEIAEELEDEIMBOgcIABCABBADOgQIABAeUOoFWOMfYJ8maAFwAHgAgAG0AogB_wySAQc2LjUuMS4xmAEAoAEBqgELZ3dzLXdpei1pbWfAAQE&sclient=img&ei=i0pVY5CtC9WW9u8PxZ694A0&bih=691&biw=768&rlz=1C1GCEU_enRO924RO924#imgrc=eaz19PG0E4RvaM",
+                imgSrc: "https://bbts1.azureedge.net/images/p/full/2021/05/4b88d668-d325-493a-b53d-7809b13d21dc.jpg",
                 desc: "",
                 generated: true,
 
@@ -108,7 +108,7 @@
             uploadImage () {
                 let api_url = this.$store.state.api_url;
 
-
+                console.log(api_url);
                 this.$http.post(api_url + "post/newpost", {
                     auth_token: localStorage.getItem("jwt"),
                     image: this.imgSrc,

@@ -71,5 +71,40 @@ module.exports = {
                     })
                 })
         })
+    },
+    //refactorizeaza functia asta cu functia de mai sus
+    getsearchedprofile: (req, res) => {
+        user_id = req.body.user_id
+        model.findById(user_id)
+        .then(user => {
+            if (!user) {
+                res.send({success: false, msg: "User not found"}); 
+            }
+
+            postModel.find({user_id: user_id})
+                .then(posts =>  {
+                    res.send({
+                        success: true,
+                        details: {
+                            display_name: user.username,
+                            posts: posts
+                        }
+                    })
+                })
+        })
+    },
+    editprofile: (req, res) => {
+        let user_id = jwt.decode(req.body.auth_token).id;
+        model.findByIdAndUpdate(user_id,{ username: req.body.username, email :req.body.email })
+        .then(oldUser => {
+            if(oldUser){
+                postModel.updateMany({display_name: oldUser.username},{display_name: req.body.username})
+                res.send({success: true, msg: "User successfully updated"}); 
+            }else{
+                res.send({success: false, msg: "No user with the send id"}); 
+            }
+        }).catch( err => {
+            res.send({success: false, msg: "Something went wrong durring the updating proccess"}); 
+        })
     }
 }

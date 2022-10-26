@@ -9,7 +9,7 @@
 
         <section class="found-user" :class="(found) ? 'show' : 'hide'">
             <div class="user-content">
-                <span>Found users:</span> <br>
+                <div class="found-user-text">Found users:</div>
                 <div v-for="names in userfound_name" :key=names._id>
                     <span class="link" @click="gotoProfile(names[0])"> 
                          <img class="profile-picture" src="https://place-hold.it/50" />
@@ -18,6 +18,9 @@
                 </div>
             </div>
         </section>
+        <div class="error_msg" v-if="hasErrors">
+                {{error}}
+        </div>
     </main>
 </template>
 
@@ -27,35 +30,59 @@ export default {
         return {
             username: '',
             userfound_name: [],
-            found: false
+            found: false,
+            hasErrors: false,
+            foundCurrentUser: false,
+            error: ""
         }
     },
     methods: {
         searchForUser() {
+            if(this.username.trim() === ""){
+                return alert('Please enter a username')
+            }
             let api_url = this.$store.state.api_url;
             this.$http.post(api_url + 'global/searchuser', {
-                username: this.username
+                username: this.username.trim(),
+                auth_token: localStorage.getItem("jwt")
             })
             .then(response => {
-                if(response.data.length > 0) {
+                if(response.data.success && response.data.users.length > 0) {
                     this.found = true;
-                    for(var i = 0; i < response.data.length; i++) {
-                        this.userfound_name.push([response.data[i]._id, response.data[i].username])
+                    this.userfound_name = []
+                    this.hasErrors = false
+                    this.foundCurrentUser = response.data.found
+                    console.log(this.foundCurrentUser)
+                    for(var i = 0; i < response.data.users.length; i++) {
+                        this.userfound_name.push([response.data.users[i]._id, response.data.users[i].username])
                     }
                 } else {
+                    this.error = response.data.msg
+                    this.hasErrors = true
                     this.found = false;
-                    return;
                 }
-            });
+            })
         },
         gotoProfile(id) {
-            this.$router.push('/foundprofile/' + id)
+            if(this.foundCurrentUser){
+                this.$router.push('/profile')
+            }else{
+                this.$router.push('/foundprofile/' + id)
+            }
+                
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
+
+    .found-user-text{
+        color: white;
+    }
+    .error_msg{
+        color: white;
+    }
     .show {
     display:block;
     }
@@ -85,7 +112,7 @@ export default {
         top: 5px;
         left: 10px;
         font-size:26px;
-        color: #35495e;
+        color: white;
         padding-left:5px;
         margin-top:10px;
         z-index: 0;

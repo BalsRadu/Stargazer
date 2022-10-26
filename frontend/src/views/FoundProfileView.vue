@@ -45,7 +45,7 @@
 
         <section class="posts">
             <div class="post" v-for="post in posts" :key="post._id">
-                <img :src="post.image" :alt="post.description" class="post-image">
+                <img :src="post.image" :alt="post.desc" class="post-image">
             </div>
         </section>
 
@@ -65,12 +65,14 @@ export default {
     methods: {
         getProfile() {
             //todo get req params
-            this.$http.post(this.$store.state.api_url + 'user/getsearchedprofile/' + this.$route.params.id)
-            .then(data => {
-                this.display_name = data.data.display_name
-                this.posts = data.data.posts
-                this.post_count = this.posts.length
+            this.$http.post(this.$store.state.api_url + 'user/getsearchedprofile',{
+                user_id: this.$route.params.id
             })
+            .then(({ data }) => {
+                    this.display_name = data.details.display_name;
+                    this.posts = data.details.posts;
+                    this.post_count = this.posts.length;
+                });
         },
         goto(path) {
             this.$router.push(path)

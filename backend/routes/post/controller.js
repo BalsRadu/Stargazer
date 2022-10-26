@@ -8,6 +8,7 @@ module.exports = {
 
         userModel.findById(user_id)
         .then(result => {
+            
             if (!result) {
                 res.send({success: false, msg: "No user was found"});
                 return;
