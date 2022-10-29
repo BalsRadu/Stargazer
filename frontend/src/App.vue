@@ -1,8 +1,10 @@
 <template>
   <div id="app">
-    <HeaderComponent v-if="isAuthenticated"/>
+    <AdminHeaderComponent v-if="isAdminAuthenticated"/>
+    <HeaderComponent v-if="isUserAuthenticated"/>
     <router-view />
-    <FooterComponent v-if="isAuthenticated"/>
+    <FooterComponent v-if="isUserAuthenticated"/>
+    <AdminFooterComponent v-if="isAdminAuthenticated"/>
   </div>
 </template>
 
@@ -10,14 +12,23 @@
   import HeaderComponent from "@/components/HeaderComponent.vue"
   import FooterComponent from "@/components/FooterComponent.vue"
 
+  import AdminHeaderComponent from "@/components/AdminHeaderComponent.vue"
+  import AdminFooterComponent from "@/components/AdminFooterComponent.vue"
+
   export default {
     components: {
       HeaderComponent,
-      FooterComponent
+      FooterComponent,
+      AdminFooterComponent,
+      AdminHeaderComponent
+      
     },
     computed: {
-      isAuthenticated () {
-        return this.$store.state.isAuthenticated;
+      isUserAuthenticated () {
+        return this.$store.state.isUserAuthenticated;
+      },
+      isAdminAuthenticated () {
+        return this.$store.state.isAdminAuthenticated;
       }
     },
   }

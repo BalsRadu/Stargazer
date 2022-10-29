@@ -19,8 +19,9 @@ module.exports = {
             user.comparePassword(req.body.password, (err,isMatch) => {
                 if(err) throw err;
                 if(isMatch) {
-                    let token = jwt.sign({id :user._id}, config.secret, {expiresIn: 86400});
-                    res.status(200).send({auth: true, token});
+                    let jwtToken = jwt.sign({id :user._id}, config.secret, {expiresIn: 86400});
+                    console.log(jwtToken)
+                    res.status(200).send({auth: true, jwtToken});
                     return
                 }else{
                     res.send({auth: false, passError: true,msg: "Password is incorrect"});

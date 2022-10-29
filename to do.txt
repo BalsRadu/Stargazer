@@ -14,11 +14,11 @@ Nota:momentan posturile sunt despartite prin linie punctata alba
 -> de verificat asezarea elementelor in pagina atunci cand afisez imaginea generata
 -Search
 -> de redenumit toate referintele din global in search
--> de gandit cum sa ramana functionalitatea(doar de admin/de admin si de user)
+X -> de gandit cum sa ramana functionalitatea(doar de admin/de admin si de user)
 Nota:de sters search-ul din footer daca ramane exclusiv pentru admin
--> de implementat backend-ul pentru search de user
+X -> de implementat backend-ul pentru search de user
 -> de inlocuit imaginea hardcodata cu imagea de profil a user-ilor
--> de schimbat culoarea icoanei in alb(cum ii si in componenta de footer)
+X -> de schimbat culoarea icoanei in alb(cum ii si in componenta de footer)
 -> de modificat scss-ul sa ramana in tematica cu situl
 -Profile 
 -> de sters followers and following
@@ -34,12 +34,12 @@ Nota:de sters search-ul din footer daca ramane exclusiv pentru admin
 -> de adaugat posibilitatea de a schimba si parola 
 -> de pozitionat headrul de succes pe centrul ecranului
 -> de adaugat un mesaj in caz ca nu s-a putut updata profilul
--> de facut partea de backend a edit profile
+X -> de facut partea de backend a edit profile
 -> de stilizat cu scss ca sa fie mai estetic
 -Profile Found
 -> de aplicatat aceleasi modificari stilistice ca si pentru profilul userului
 -> de sters butoanele de follow si unfollow
--> de facut partea de backend a afisari profilului 
+X -> de facut partea de backend a afisari profilului 
 -Login
 -> de sters alerturile(alea de empty field) si inlocuite cu un error mesage
 -Register
@@ -48,42 +48,40 @@ Nota:de sters search-ul din footer daca ramane exclusiv pentru admin
 -> de sters alerturile(alea de empty field) si inlocuite cu un error mesage
 Admin:
 -Register
--> the same register ca si pentru user
--> la crearea contului o sa se afiseze un token format dintr-un string random de 10 caractere
--> un cont de admin se identifica prin token
--> crearea unei colectii noi pentru admin, formata din: id,username,parola,email si token
--> de facut partea de backend care gestioneaza crearea contului de admin
--> nu se poate accesa numai daca stii path-ul dinainte(o sa fie ceva de genu /adminregister)
--> intre admin register si login se poate naviga(ca la user)
--> de adaugat ceva sa se diferentieze registerul de user( de exmplu o icoana de admin)
--> in acelasi still ca si registerul pentru user(scrisul,culorile,mesajele de eroare,etc)
+X -> the same register ca si pentru user
+X -> la crearea contului o sa se afiseze un token format dintr-un string random de 10 caractere
+X -> crearea unei colectii noi pentru admin, formata din: id,username,parola,email si token
+X -> de facut partea de backend care gestioneaza crearea contului de admin
+X -> nu se poate accesa numai daca stii path-ul dinainte(o sa fie ceva de genu /adminregister)
+X -> intre admin register si login se poate naviga(ca la user)
+X -> de adaugat ceva sa se diferentieze registerul de user( de exmplu o icoana de admin)
+X -> in acelasi still ca si registerul pentru user(scrisul,culorile,mesajele de eroare,etc)
 -Login
--> the same login ca si pentru user
--> pe langa username si parola, un admin mai are nevoie si de token pentru a se loga
--> de adaugat un mesaj daca tokenul adminului nu este bun
--> nu se poate accesa numai daca stii path-ul dinainte(o sa fie ceva de genu /adminlogin)
--> de adaugat ceva sa se diferentieze loginul de user( de exmplu o icoana de admin)
--> de creat partea de backend care gestioneaza loginul adminului(verificarea ca este admin)
--> se va folosi acelasi token(jwt) ca si pentru user,dar va mai fi setata o variabile denumita admin(care trebuie sa fie true)
--> orice pagina de admin nu se poate accesa daca admin nu este pe true
--> in acelasi still ca si loginul pentru user(scrisul,culorile,mesajele de eroare,etc)
--Heder/Footer
--> o sa se foloseasca un header si footer ca la user
--> footerul o sa aiba doua butoane: pagina de feed si de useri
--> pe header o sa fie si un button de logout ca la user(atunci cand se delogheaza flagul admin o sa se puna pe false)
--> odata delogat o sa fii redirectionat pe pagine de login al adminului
+X -> the same login ca si pentru user
+X -> pe langa username si parola, un admin mai are nevoie si de token pentru a se loga
+X -> de adaugat un mesaj daca tokenul adminului nu este bun
+X -> nu se poate accesa numai daca stii path-ul dinainte(o sa fie ceva de genu /adminlogin)
+X -> de adaugat ceva sa se diferentieze loginul de user( de exmplu o icoana de admin)
+X -> de creat partea de backend care gestioneaza loginul adminului(verificarea ca este admin)
+X -> se va folosi acelasi token(jwt) ca si pentru user,dar va mai fi setata o variabile denumita admin(care trebuie sa fie true)
+X -> orice pagina de admin nu se poate accesa daca admin nu este pe true
+X -> in acelasi still ca si loginul pentru user(scrisul,culorile,mesajele de eroare,etc)
+-Header/Footer
+X -> o sa se foloseasca un header si footer ca la user
+X -> footerul o sa aiba doua butoane: pagina de feed si de useri
+X -> pe header o sa fie si un button de logout ca la user(atunci cand se delogheaza flagul admin o sa se puna pe false)
+X -> odata delogat o sa fii redirectionat pe pagine de login al adminului
 -Delete Post
--> o sa fie feed-ul normal al userului
--> adminul o sa mai aiba un buton de stergere pentru fecare post
--> un admin ar sterge o postare daca acesta ar fi considera "nepotrivita"
--> de updatat baza de date cu stergerea postului
+X -> o sa fie feed-ul normal al userului
+X -> adminul o sa mai aiba un buton de stergere pentru fecare post
+X -> de updatat baza de date cu stergerea postului
 -Ban User
--> adminul o sa poate vedea toate profilurile userilor(ca la search doar fara sa mai caute)
--> un admin poate vedea porfilul unui user pentru a determina daca il baneaza(sa le vada profilul)
+X -> adminul o sa poate vedea toate profilurile userilor(ca la search doar fara sa mai caute)
+X -> un admin poate vedea porfilul unui user pentru a determina daca il baneaza(sa le vada profilul)
 -> un admin poate da ban sau unban la un user din lita
 -> in dreptul fiecarului profil o sa apara daca ei sunt banati sau nu(sau o sa aiba un buton de ban langa profil)
 -> fiecare user o sa aiba un field de banned in baza de date
-->dupa fiecare modificare a fieldului de banned, baza de date o sa fie updatata
+-> dupa fiecare modificare a fieldului de banned, baza de date o sa fie updatata
 -> daca un user o sa fie banat el o sa primeasca un mesaj adecvat la login
 Altele:
 -> de refacut .ipynb-ul modelului pe google colab

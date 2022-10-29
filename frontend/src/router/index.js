@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory} from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
@@ -7,6 +7,11 @@ import ProfileView from '../views/ProfileView.vue'
 import EditProfileView from '../views/EditProfileView.vue'
 import GlobalView from '../views/GlobalView.vue'
 import FoundProfileView from '../views/FoundProfileView.vue'
+import AdminLoginView from '../views/AdminLoginView.vue'
+import AdminRegisterView from '../views/AdminRegisterView.vue'
+import AdminMainView from '../views/AdminMainView.vue'
+import AdminBanView from '../views/AdminBanView.vue'
+import AdminFoundUserView from '../views/AdminFoundUserView.vue'
 import axios from "axios"
 import store from '@/store'
 
@@ -17,7 +22,7 @@ const routes = [
     name: 'register',
     component: RegisterView,
     meta:{
-      requiresAuth: false
+      requiresUserAuth: false
     }
   },
   {
@@ -25,7 +30,7 @@ const routes = [
     name: 'login',
     component: LoginView,
     meta:{
-      requiresAuth: false
+      requiresUserAuth: false
     }
   },
   {
@@ -33,7 +38,7 @@ const routes = [
     name: 'home',
     component: HomeView,
     meta:{
-      requiresAuth: true
+      requiresUserAuth: true
     }
   },
   {
@@ -41,7 +46,7 @@ const routes = [
     name: 'post',
     component: PostView,
     meta:{
-      requiresAuth: true
+      requiresUserAuth: true
     }
   },
   {
@@ -49,7 +54,7 @@ const routes = [
     name: 'profile',
     component: ProfileView,
     meta:{
-      requiresAuth: true
+      requiresUserAuth: true
     }
   },
   {
@@ -57,7 +62,7 @@ const routes = [
     name: 'editprofile',
     component: EditProfileView,
     meta: {
-      requiresAuth: true
+      requiresUserAuth: true
     }
   },
   {
@@ -65,7 +70,7 @@ const routes = [
     name: 'global',
     component: GlobalView,
     meta: {
-      requiresAuth: true
+      requiresUserAuth: true
     }
   },
   {
@@ -73,10 +78,49 @@ const routes = [
     name: 'found',
     component: FoundProfileView,
     meta: {
-      requiresAuth: true
+      requiresUserAuth: true
     }
   },
-  
+  {
+    path: '/admin/login',
+    name: 'adminlogin',
+    component: AdminLoginView,
+    meta: {
+      requiresAdminAuth: false
+    }
+  },
+  {
+    path: '/admin/register',
+    name: 'adminregister',
+    component: AdminRegisterView,
+    meta: {
+      requiresAdminAuth: false
+    }
+  },
+  {
+    path: '/admin',
+    name: 'admin',
+    component: AdminMainView,
+    meta: {
+      requiresAdminAuth: true
+    }
+  },
+  {
+    path: '/admin/banuser',
+    name: 'banuser',
+    component: AdminBanView,
+    meta: {
+      requiresAdminAuth: true
+    }
+  },
+  {
+    path: '/admin/foundprofile/:id',
+    name: 'founduser',
+    component: AdminFoundUserView,
+    meta: {
+      requiresAdminAuth: true
+    }
+  },
 ]
 
 const router = createRouter({
@@ -85,22 +129,8 @@ const router = createRouter({
 })
 
 
-const onReady = (path) => {
-  store.commit("isAuthenticated");
-  if (path === "/")
-  axios.get(store.state.api_url + "post/getposts")
-    .then(response => {
-      store.commit("getFeed", response.data);
-    })
-    .catch(err => {
-      if(err) throw err;
-    })
-};
-
-router.beforeEach((to, from, next) => {
-
-  onReady(to.fullPath);
-  if(to.matched.some(record => record.meta.requiresAuth)){
+const handleUserRouting = (to, from, next) => {
+  if(to.matched.some(record => record.meta.requiresUserAuth)){
     if(localStorage.getItem('jwt') == null){
       next({
         path: "/login",
@@ -110,7 +140,7 @@ router.beforeEach((to, from, next) => {
       next()
     }
   }else{
-    console.log('no');
+    // next()
     if(localStorage.getItem('jwt') != null){
       next({
         path: "/",
@@ -119,6 +149,73 @@ router.beforeEach((to, from, next) => {
     }else{
       next()
     }
+  }
+};
+
+const handleFromAdmin = (to, from, next) => {
+
+  if(!to.matched.some(record => record.meta.requiresAdminAuth)
+    &&localStorage.getItem('adminJwt') != null){
+      next({
+        path: "/admin",
+        params: { nextUrl: "/admin" }
+      })
+}
+}
+
+const handleAdminRouting = (to, from, next) => {
+  if(to.matched.some(record => record.meta.requiresAdminAuth)){
+    if(localStorage.getItem('adminJwt') == null){
+      next({
+        path: "/login",
+        params:{nextUrl: to.fullPath}
+      })
+    }else{
+      next()
+    }
+  }else{
+    if(localStorage.getItem('adminJwt') != null){
+      next({
+        path: "/admin",
+        params: { nextUrl: "/admin" }
+      })
+    }else{
+      next()
+    }
+  }
+};
+
+const onReady = (path) => {
+  store.commit("isAuthenticated");
+  if (path === "/"
+  || path === "/admin")
+  axios.get(store.state.api_url + "post/getposts")
+    .then(response => {
+      store.commit("getFeed", response.data);
+    })
+    .catch(err => {
+      if(err) throw err;
+    })
+};
+
+
+
+router.beforeEach((to, from, next) => {
+  let resolved = router.resolve(to.fullPath)
+  if(resolved.matched.length === 0)
+  { 
+    next({
+      path: "/",
+      params: { nextUrl: "/" }
+    });
+  }
+    
+  onReady(to.fullPath);
+  handleFromAdmin(to, from, next)
+  if(to.fullPath.includes("admin")){
+    handleAdminRouting(to, from, next);
+  }else{
+    handleUserRouting(to, from, next);
   }
 })
 

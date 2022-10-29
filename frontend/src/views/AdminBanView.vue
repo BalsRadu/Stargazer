@@ -1,16 +1,9 @@
 <template>
     <main class="view global">
-        <section class="content">
-            <input type="text" v-model="username" class="searchBar" id="searchBar" name="username">
-            <span class="search icon" @click="searchForUser">
-                <i class="material-icons" >search</i>
-            </span>
-        </section>
-
-        <section class="found-user" :class="(found) ? 'show' : 'hide'">
+        <section class="found-user">
             <div class="user-content">
                 <div class="found-user-text">Found users:</div>
-                <div v-for="names in userfound_name" :key=names._id>
+                <div v-for="names in users" :key=names._id>
                     <span class="link" @click="gotoProfile(names[0])"> 
                          <img class="profile-picture" src="https://place-hold.it/50" />
                          <span class="profile-name">{{ names[1] }}</span>
@@ -28,47 +21,33 @@
 export default {
     data() {
         return {
-            username: '',
-            userfound_name: [],
-            found: false,
+            users: [],
             hasErrors: false,
-            currentUserId: "",
             error: ""
         }
     },
+    mounted() {
+        this.getUsers();
+    },
     methods: {
-        searchForUser() {
-            if(this.username.trim() === ""){
-                return alert('Please enter a username')
-            }
+        getUsers() {
             let api_url = this.$store.state.api_url;
-            this.$http.post(api_url + 'global/searchuser', {
-                username: this.username.trim(),
-                auth_token: localStorage.getItem("jwt")
-            })
+            this.$http.post(api_url + 'global/getusers')
             .then(response => {
                 if(response.data.success && response.data.users.length > 0) {
-                    this.found = true;
-                    this.userfound_name = []
                     this.hasErrors = false
                     this.currentUserId = response.data.currId
                     for(var i = 0; i < response.data.users.length; i++) {
-                        this.userfound_name.push([response.data.users[i]._id, response.data.users[i].username])
+                        this.users.push([response.data.users[i]._id, response.data.users[i].username])
                     }
                 } else {
                     this.error = response.data.msg
                     this.hasErrors = true
-                    this.currentUserId = ""
                 }
             })
         },
         gotoProfile(id) {
-            if(this.currentUserId === id){
-                this.$router.push('/profile')
-            }else{
-                this.$router.push('/foundprofile/' + id)
-            }
-                
+            this.$router.push('foundprofile/' + id)    
         }
     }
 }

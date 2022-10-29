@@ -10,8 +10,19 @@ module.exports = {
                 res.send({success: false, msg: "No user was found"}); 
             }else{
                 let user_id = jwt.decode(req.body.auth_token).id;
-                let found = users.some(el => el._id.toString() === user_id);
-                res.send({success: true, users: users, found: found});
+                res.send({success: true, users: users,currId: user_id});
+            }
+        }).catch(err =>{
+            if (err) res.send({success: false, msg: err}); 
+        })
+    },
+    getusers: (req, res) => {
+        userModel.find()
+        .then(users => {
+            if (!users || users.length === 0) {
+                res.send({success: false, msg: "No user was found"}); 
+            }else{
+                res.send({success: true, users: users});
             }
         }).catch(err =>{
             if (err) res.send({success: false, msg: err}); 
