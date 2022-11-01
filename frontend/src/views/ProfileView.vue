@@ -21,12 +21,12 @@
                 </div>
 
                 <div class="follower-count">
-                    <span>234</span> <br>
+                    <span>{{followers_count}}</span> <br>
                     FOLLOWERS
                 </div>
 
                 <div class="following-count">
-                    <span>928</span> <br>
+                    <span>{{following_count}}</span> <br>
                     FOLLOWING
                 </div>
                 
@@ -56,9 +56,9 @@
             return {
                 display_name: '',
                 posts: [],
-                post_count: '',
-                follower_count: '',
-                following_count: ''
+                post_count: 0,
+                followers_count: 0,
+                following_count: 0
             }
         },
         methods: {
@@ -69,6 +69,9 @@
                 }).then(({ data }) => {
                     this.display_name = data.details.display_name;
                     this.posts = data.details.posts;
+                    this.posts_count = this.posts.length;
+                    this.followers_count = data.details.followers_count;
+                    this.following_count = data.details.following_count;
                 });
             },
             goto(path) {
