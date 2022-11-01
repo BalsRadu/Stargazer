@@ -21,22 +21,22 @@
                 </div>
 
                 <div class="follower-count">
-                    <span>234</span> <br>
+                    <span>{{followers_count}}</span> <br>
                     FOLLOWERS
                 </div>
 
                 <div class="following-count">
-                    <span>928</span> <br>
+                    <span>{{following_count}}</span> <br>
                     FOLLOWING
                 </div>
                 
             </div>
 
             <div class="follow-profile-sec">
-                <span class="follow-profile">
+                <span class="follow-profile" @click="follow_user">
                     Follow
                 </span>
-                <span class="unfollow-profile">
+                <span class="unfollow-profile" @click="unfollow_user">
                     Unfollow
                 </span>
             </div>
@@ -59,11 +59,17 @@ export default {
         return {
             display_name: '',
             posts: [],
-            post_count: ''
+            post_count: '',
+            followers_count: 0,
+            following_count: 0,
+            logged_profile: {
+                followers_count: 0,
+                following_count: 0,
+            }
         }
     },
     methods: {
-        getProfile() {
+        getSearchedProfile() {
             //todo get req params
             this.$http.post(this.$store.state.api_url + 'user/getsearchedprofile',{
                 user_id: this.$route.params.id
@@ -72,13 +78,51 @@ export default {
                     this.display_name = data.details.display_name;
                     this.posts = data.details.posts;
                     this.post_count = this.posts.length;
+                    this.followers_count = data.details.followers_count;
+                    this.following_count = data.details.following_count;
+                });
+        },
+        getProfile() {
+            this.$http.post(this.$store.state.api_url + 'user/getprofile')
+                .then(({ data }) => {
+                    this.logged_profile.followers_count = data.details.followers_count;
+                    this.logged_profile.following_count = data.details.following_count;
+
                 });
         },
         goto(path) {
             this.$router.push(path)
+        },
+        follow_user() {
+            this.followers_count ++
+            this.logged_profile.following_count ++
+            this.$http.post(this.$store.state.api_url + 'user/follow',{
+                user_id: this.$route.params.id,
+                auth_token: localStorage.getItem("jwt"),
+                followers_count: this.followers_count,
+                following_count: this.logged_profile.following_count
+                
+            })
+            .then(({ data }) => {
+                    console.log(data);
+                });
+        },
+        unfollow_user() {
+            this.followers_count --
+            this.logged_profile.following_count --
+            this.$http.post(this.$store.state.api_url + 'user/unfollow',{
+                user_id: this.$route.params.id,
+                auth_token: localStorage.getItem("jwt"),
+                followers_count: this.followers_count,
+                following_count: this.logged_profile.following_count
+            })
+            .then(({ data }) => {
+                    console.log(data);
+                });
         }
     },
     beforeMount() {
+        this.getSearchedProfile()
         this.getProfile()
     }
 }
